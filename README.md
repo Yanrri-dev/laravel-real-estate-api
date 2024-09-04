@@ -1,13 +1,79 @@
-
 # API Real State
 
 API para consultar propiedades , personas y solicitudes de visita en un real state
 
+
+
+## Configuración Entorno
+
+Esta API esta construída utilizando Laravel 8, PHP 7.4 y MySQL 8.0.39
+
+Luego del hacer pull al repositorio se deben instalar las dependecias con composer
+
+```bash
+composer install
+```
+
+Luego se debe configurar el archivo .env para ello es necesario crearlo tomando el ejemplo que incluye laravel
+
+```bash
+cp .env.example .env
+```
+
+Dentro del archivo se debe indicar la base de datos y las credenciales para acceder a ella
+
+En caso de testing se puede crear una base de datos adicional y dejar las credenciales en el archivo .env.testing
+
+
+Generar las llaves de app
+
+```bash
+php artisan key:generate
+```
+
+Generar llave JWT para autenticación
+
+```bash
+php artisan jwt:secret
+```
+
+En caso de testing se puede crear una base de datos adicional y crear un archivo .env.testing dejando las credenciales y base de datos de prueba
+
+```bash
+cp .env .env.testing
+```
+
+
+Luego se pueden correr las migraciones
+
+```bash
+php artisan migrate
+```
+
+Para correr las migraciones en la base de datos de testing
+
+```bash
+php artisan migrate --env=testing
+```
+
+
+### Testing
+
+Para correr los test simplemente es usando el comando
+```bash
+php artisan test
+```
+
+
+
+
+
+
+
 <!--- If we have only one group/collection, then no need for the "ungrouped" heading -->
 
 
-
-## Endpoints
+## API Endpoints
 
 * [Auth](#auth)
     1. [login](#1-login)
@@ -38,14 +104,18 @@ API para consultar propiedades , personas y solicitudes de visita en un real sta
 
 ## Auth
 
-Endpoints para autenticarse y obtener un token JWT para usar el resto de métodos.
+
+Se utiliza JWT como middleware para acceder a los endpoints de la API. 
+
+
+Los endpoints de esta sección para autenticarse y obtener un token JWT para usar el resto de métodos.
 
 
 
 ### 1. login
 
 
-Método para registrar un nuevo usuario y obtener un token válido
+Método para hacer login y obtener un token válido
 
 
 ***Endpoint:***
@@ -70,7 +140,7 @@ URL: localhost:8000/api/auth/login
 ### 2. register
 
 
-Método para hacer login y obtener un token de acceso.
+Este endpoint debe utilizar para crear un usuario de prueba y obtener un token válido para usar el resto de los endpoint
 
 
 ***Endpoint:***
@@ -95,7 +165,7 @@ URL: localhost:8000/api/auth/register
 
 ### 3. Me
 
-
+Este endpoint simplemente devuelve el usuario registrado y mostrar sus datos
 
 ***Endpoint:***
 
@@ -112,6 +182,13 @@ URL: localhost:8000/api/auth/me
 | --- | ------|-------------|
 | Content-Type | application/json |  |
 
+
+
+##
+##
+##
+
+Los siguinetes endpoints requieren ingresar un token de autenticación en el caso de Postman se puede ingresar directamente en la pestaña de Autorización.
 
 
 ## Personas
@@ -132,7 +209,7 @@ Se acepta filtrar por pagina, nombre, email
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: localhost:8000/api/personas
 ```
 
@@ -257,7 +334,7 @@ Se puede filtrar por pagina, ciudad y precio
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: localhost:8000/api/propiedades
 ```
 
@@ -308,7 +385,7 @@ Ver los datos de una propiedad
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: localhost:8000/api/propiedades/3
 ```
 
@@ -351,7 +428,7 @@ Borrar una propiedad
 
 ```bash
 Method: DELETE
-Type: 
+Type:
 URL: localhost:8000/api/propiedades/1
 ```
 
@@ -373,7 +450,7 @@ Lista de todas las solicitudes de visistas, incluye la persona y la propiedad a 
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: localhost:8000/api/solicitud_visitas
 ```
 
@@ -416,7 +493,7 @@ Obtiene los datos de una solicitud con la propiedad y personas asociada
 
 ```bash
 Method: GET
-Type: 
+Type:
 URL: localhost:8000/api/solicitud_visitas/3
 ```
 
@@ -448,7 +525,7 @@ Borra una solicitud de visita
 
 ```bash
 Method: DELETE
-Type: 
+Type:
 URL: localhost:8000/api/solicitud_visitas/4
 ```
 
@@ -456,5 +533,3 @@ URL: localhost:8000/api/solicitud_visitas/4
 
 ---
 [Back to top](#api-real-state)
-
->Generated at 2024-09-04 13:26:55 by [docgen](https://github.com/thedevsaddam/docgen)
