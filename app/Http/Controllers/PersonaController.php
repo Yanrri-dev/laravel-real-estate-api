@@ -154,6 +154,11 @@ class PersonaController extends Controller
             return response()->json(['message' => 'Persona no encontrada'], 404);
         }
 
+        //check si la persona tiene solictudes
+        if($persona->solicitudes->count() > 0) {
+            return response()->json(['message' => 'No se puede eliminar la persona, tiene solicitudes asociadas'], 400);
+        }
+
         $persona->delete();
 
         return response()->json(['message' => 'Persona eliminada'], 200);
