@@ -16,7 +16,7 @@ class SolicitudVisitaController extends Controller
     public function index()
     {
 
-        $solicitud_visitas = SolicitudVisita::with('persona', 'propiedad')->get();
+        $solicitud_visitas = SolicitudVisita::with('persona', 'propiedad')->paginate();
 
         return response()->json($solicitud_visitas);
 
@@ -107,9 +107,9 @@ class SolicitudVisitaController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'persona_id' => 'required|exists:personas,id',
-            'propiedad_id' => 'required|exists:propiedades,id',
-            'fecha_visita' => 'required|date',
+            'persona_id' => 'sometimes|required|exists:personas,id',
+            'propiedad_id' => 'sometimes|required|exists:propiedades,id',
+            'fecha_visita' => 'sometimes|required|date',
             'comentarios' => 'max:1024',
         ]);
 

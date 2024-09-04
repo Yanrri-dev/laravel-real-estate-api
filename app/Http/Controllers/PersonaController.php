@@ -13,11 +13,28 @@ class PersonaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
-        $personas = Persona::all();
+        $nombre = $request->query('nombre');
+        $email =  $request->query('email');
+        $telefono = $request->query('telefono');
 
+        $query = Persona::query();
+
+        if($nombre) {
+            $query->where('nombre', 'like', "%$nombre%");
+        }
+
+        if($email) {
+            $query->where('email', 'like', "%$email%");
+        }
+
+        if($telefono) {
+            $query->where('telefono', 'like', "%$telefono%");
+        }
+
+        $personas = $query->paginate();
         return response()->json($personas);
 
     }
@@ -106,9 +123,9 @@ class PersonaController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'nombre' => 'required|max:128',
-            'email' => 'required|email',
-            'telefono' => 'required|max:32',
+            'nombre' => 'sometimes|required|max:128',
+            'email' => 'sometimes|required|email',
+            'telefono' => 'sometimes|required|max:32',
         ]);
 
         if ($validator->fails()) {

@@ -13,9 +13,23 @@ class PropiedadController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $propiedades = Propiedad::all();
+
+        $ciudad = $request->query('ciudad');
+        $precio = $request->query('precio');
+
+        $query = Propiedad::query();
+
+        if($ciudad) {
+            $query->where('ciudad', 'like', "%$ciudad%");
+        }
+
+        if($precio) {
+            $query->where('precio', '>=', $precio);
+        }
+
+        $propiedades = $query->paginate();
 
         return response()->json($propiedades);
     }
@@ -106,9 +120,9 @@ class PropiedadController extends Controller
         }
 
         $validator = Validator::make($request->all(), [
-            'direccion' => 'required|max:512',
-            'ciudad' => 'required|max:64',
-            'precio' => 'required|numeric',
+            'direccion' => 'sometimes|required|max:512',
+            'ciudad' => 'sometimes|required|max:64',
+            'precio' => 'sometimes|required|numeric',
             'descripcion' => 'max:1024',
         ]);
 
@@ -118,7 +132,7 @@ class PropiedadController extends Controller
 
         $propiedad->update($request->all());
 
-        return response()->json(['message', 'Propiedad actualizada', 'propiedad' => $propiedad ], 200);
+        return response()->json(['message' => 'Propiedad actualizada', 'propiedad' => $propiedad ], 200);
 
 
     }
