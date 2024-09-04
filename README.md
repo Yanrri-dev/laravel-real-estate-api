@@ -1,1127 +1,460 @@
----
-title: My Project
-language_tabs:
-  - shell: Shell
-  - http: HTTP
-  - javascript: JavaScript
-  - ruby: Ruby
-  - python: Python
-  - php: PHP
-  - java: Java
-  - go: Go
-toc_footers: []
-includes: []
-search: true
-code_clipboard: true
-highlight_theme: darkula
-headingLevel: 2
-generator: "@tarslib/widdershins v4.0.23"
-
----
-
-# My Project
-
-Base URLs:
-
-# Authentication
-
-- HTTP Authentication, scheme: bearer
-
-# Sample APIs
-
-## GET Find pet by ID
-
-GET /pet/{petId}
-
-### Params
-
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|petId|path|string| yes |pet ID|
-
-> Response Examples
-
-```json
-{
-  "code": 0,
-  "data": {
-    "name": "Hello Kitty",
-    "photoUrls": [
-      "http://dummyimage.com/400x400"
-    ],
-    "id": 3,
-    "category": {
-      "id": 71,
-      "name": "Cat"
-    },
-    "tags": [
-      {
-        "id": 22,
-        "name": "Cat"
-      }
-    ],
-    "status": "sold"
-  }
-}
-```
-
-> 400 Response
-
-```json
-{
-  "code": 0,
-  "message": "string"
-}
-```
-
-### Responses
-
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|none|Inline|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|none|Inline|
-
-### Responses Data Schema
-
-HTTP Status Code **200**
-
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||status code|
-|» data|[Pet](#schemapet)|true|none||pet details|
-|»» id|integer(int64)|true|none||Pet ID|
-|»» category|[Category](#schemacategory)|true|none||group|
-|»»» id|integer(int64)|false|none||Category ID|
-|»»» name|string|false|none||Category Name|
-|»» name|string|true|none||name|
-|»» photoUrls|[string]|true|none||image URL|
-|»» tags|[[Tag](#schematag)]|true|none||tag|
-|»»» id|integer(int64)|false|none||Tag ID|
-|»»» name|string|false|none||Tag Name|
-|»» status|string|true|none||Pet Sales Status|
 
-#### Enum
+# API Real State
 
-|Name|Value|
-|---|---|
-|status|available|
-|status|pending|
-|status|sold|
+API para consultar propiedades , personas y solicitudes de visita en un real state
 
-HTTP Status Code **400**
+<!--- If we have only one group/collection, then no need for the "ungrouped" heading -->
 
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-|» message|string|true|none||none|
 
-HTTP Status Code **404**
 
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-|» message|string|true|none||none|
+## Endpoints
 
-## DELETE Deletes a pet
-
-DELETE /pet/{petId}
-
-### Params
-
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|petId|path|string| yes |Pet id to delete|
-|api_key|header|string| no |none|
-
-> Response Examples
-
-```json
-{
-  "code": 0
-}
-```
+* [Auth](#auth)
+    1. [login](#1-login)
+    1. [register](#2-register)
+    1. [Me](#3-me)
+* [Personas](#personas)
+    1. [List Personas](#1-list-personas)
+    1. [Create persona](#2-create-persona)
+    1. [Read persona](#3-read-persona)
+    1. [Update persona](#4-update-persona)
+    1. [Delete persona](#5-delete-persona)
+* [Propiedades](#propiedades)
+    1. [List propiedades](#1-list-propiedades)
+    1. [Create propiedad](#2-create-propiedad)
+    1. [Read propiedad](#3-read-propiedad)
+    1. [Update propiedad](#4-update-propiedad)
+    1. [Delete propiedad](#5-delete-propiedad)
+* [Solicitud Visitas](#solicitud-visitas)
+    1. [List  solicitud visitas](#1-list--solicitud-visitas)
+    1. [Create solicitud visita](#2-create-solicitud-visita)
+    1. [Read solicitud visita](#3-read-solicitud-visita)
+    1. [Update solicitud visita](#4-update-solicitud-visita)
+    1. [Delete solicitud visita](#5-delete-solicitud-visita)
 
-### Responses
+--------
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
 
-HTTP Status Code **200**
+## Auth
 
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
+Endpoints para autenticarse y obtener un token JWT para usar el resto de métodos.
 
-## POST Add a new pet to the store
 
-POST /pet
 
-> Body Parameters
+### 1. login
 
-```yaml
-name: Hello Kitty
-status: sold
-
-```
-
-### Params
-
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» name|body|string| yes |Pet Name|
-|» status|body|string| yes |Pet Sales Status|
-
-> Response Examples
-
-```json
-{
-  "code": 0,
-  "data": {
-    "name": "Hello Kitty",
-    "photoUrls": [
-      "http://dummyimage.com/400x400"
-    ],
-    "id": 3,
-    "category": {
-      "id": 71,
-      "name": "Cat"
-    },
-    "tags": [
-      {
-        "id": 22,
-        "name": "Cat"
-      }
-    ],
-    "status": "sold"
-  }
-}
-```
-
-### Responses
-
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|201|[Created](https://tools.ietf.org/html/rfc7231#section-6.3.2)|none|Inline|
-
-### Responses Data Schema
-
-HTTP Status Code **201**
-
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-|» data|[Pet](#schemapet)|true|none||pet details|
-|»» id|integer(int64)|true|none||Pet ID|
-|»» category|[Category](#schemacategory)|true|none||group|
-|»»» id|integer(int64)|false|none||Category ID|
-|»»» name|string|false|none||Category Name|
-|»» name|string|true|none||name|
-|»» photoUrls|[string]|true|none||image URL|
-|»» tags|[[Tag](#schematag)]|true|none||tag|
-|»»» id|integer(int64)|false|none||Tag ID|
-|»»» name|string|false|none||Tag Name|
-|»» status|string|true|none||Pet Sales Status|
-
-#### Enum
-
-|Name|Value|
-|---|---|
-|status|available|
-|status|pending|
-|status|sold|
-
-## PUT Update an existing pet
-
-PUT /pet
-
-> Body Parameters
-
-```json
-{}
-```
-
-### Params
-
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-
-> Response Examples
-
-```json
-{
-  "code": 0,
-  "data": {
-    "name": "Hello Kitty",
-    "photoUrls": [
-      "http://dummyimage.com/400x400"
-    ],
-    "id": 3,
-    "category": {
-      "id": 71,
-      "name": "Cat"
-    },
-    "tags": [
-      {
-        "id": 22,
-        "name": "Cat"
-      }
-    ],
-    "status": "sold"
-  }
-}
-```
-
-> 404 Response
-
-```json
-{}
-```
-
-### Responses
-
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-|404|[Not Found](https://tools.ietf.org/html/rfc7231#section-6.5.4)|none|Inline|
-|405|[Method Not Allowed](https://tools.ietf.org/html/rfc7231#section-6.5.5)|none|Inline|
-
-### Responses Data Schema
-
-HTTP Status Code **200**
-
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-|» data|[Pet](#schemapet)|true|none||pet details|
-|»» id|integer(int64)|true|none||Pet ID|
-|»» category|[Category](#schemacategory)|true|none||group|
-|»»» id|integer(int64)|false|none||Category ID|
-|»»» name|string|false|none||Category Name|
-|»» name|string|true|none||name|
-|»» photoUrls|[string]|true|none||image URL|
-|»» tags|[[Tag](#schematag)]|true|none||tag|
-|»»» id|integer(int64)|false|none||Tag ID|
-|»»» name|string|false|none||Tag Name|
-|»» status|string|true|none||Pet Sales Status|
-
-#### Enum
-
-|Name|Value|
-|---|---|
-|status|available|
-|status|pending|
-|status|sold|
-
-## GET Finds Pets by status
-
-GET /pet/findByStatus
-
-### Params
-
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|status|query|string| yes |Status values that need to be considered for filter|
-
-> Response Examples
-
-```json
-{
-  "code": 0,
-  "data": [
-    {
-      "name": "Hello Kitty",
-      "photoUrls": [
-        "http://dummyimage.com/400x400"
-      ],
-      "id": 3,
-      "category": {
-        "id": 71,
-        "name": "Cat"
-      },
-      "tags": [
-        {
-          "id": 22,
-          "name": "Cat"
-        }
-      ],
-      "status": "sold"
-    },
-    {
-      "name": "White Dog",
-      "photoUrls": [
-        "http://dummyimage.com/400x400"
-      ],
-      "id": 3,
-      "category": {
-        "id": 71,
-        "name": "Dog"
-      },
-      "tags": [
-        {
-          "id": 22,
-          "name": "Dog"
-        }
-      ],
-      "status": "sold"
-    }
-  ]
-}
-```
-
-> 400 Response
-
-```json
-{
-  "code": 0
-}
-```
-
-### Responses
-
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-|400|[Bad Request](https://tools.ietf.org/html/rfc7231#section-6.5.1)|none|Inline|
-
-### Responses Data Schema
-
-HTTP Status Code **200**
-
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|*anonymous*|[[Pet](#schemapet)]|false|none||none|
-|» id|integer(int64)|true|none||Pet ID|
-|» category|[Category](#schemacategory)|true|none||group|
-|»» id|integer(int64)|false|none||Category ID|
-|»» name|string|false|none||Category Name|
-|» name|string|true|none||name|
-|» photoUrls|[string]|true|none||image URL|
-|» tags|[[Tag](#schematag)]|true|none||tag|
-|»» id|integer(int64)|false|none||Tag ID|
-|»» name|string|false|none||Tag Name|
-|» status|string|true|none||Pet Sales Status|
-
-#### Enum
-
-|Name|Value|
-|---|---|
-|status|available|
-|status|pending|
-|status|sold|
-
-HTTP Status Code **400**
-
-|Name|Type|Required|Restrictions|Title|description|
-|---|---|---|---|---|---|
-|» code|integer|true|none||none|
-
-# Auth
-
-## POST login
-
-POST /api/auth/login
 
 Método para registrar un nuevo usuario y obtener un token válido
 
-> Body Parameters
 
-```yaml
-name: Nicolas Rojas
-email: nrojas@lacasadejuana.cl
-password: "123456"
+***Endpoint:***
 
+```bash
+Method: POST
+Type: FORMDATA
+URL: localhost:8000/api/auth/login
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» name|body|string| no |none|
-|» email|body|string| yes |none|
-|» password|body|string| yes |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
+| Key | Value | Description |
+| --- | ------|-------------|
+| email | nrojas@lacasadejuana.cl |  |
+| password | 123456 |  |
 
-```json
-{}
-```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+### 2. register
 
-### Responses Data Schema
-
-## POST register
-
-POST /api/auth/register
 
 Método para hacer login y obtener un token de acceso.
 
-> Body Parameters
 
-```yaml
-email: nrojas@lacasadejuana.cl
-password: "123456"
-name: Nicolás Rojas
+***Endpoint:***
 
+```bash
+Method: POST
+Type: FORMDATA
+URL: localhost:8000/api/auth/register
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» email|body|string| yes |none|
-|» password|body|string| yes |none|
-|» name|body|string| yes |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
+| Key | Value | Description |
+| --- | ------|-------------|
+| email | nrojas@lacasadejuana.cl |  |
+| password | 123456 |  |
+| name | Nicolás Rojas |  |
 
-```json
-{}
+
+
+### 3. Me
+
+
+
+***Endpoint:***
+
+```bash
+Method: POST
+Type: FORMDATA
+URL: localhost:8000/api/auth/me
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+***Headers:***
 
-### Responses Data Schema
+| Key | Value | Description |
+| --- | ------|-------------|
+| Content-Type | application/json |  |
 
-## POST Me
 
-POST /api/auth/me
 
-> Body Parameters
+## Personas
 
-```yaml
-{}
+CRUD de Personas
 
-```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|Content-Type|header|string| yes |none|
-|body|body|object| no |none|
+### 1. List Personas
 
-> Response Examples
-
-> 200 Response
-
-```json
-{}
-```
-
-### Responses
-
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### Responses Data Schema
-
-# Personas
-
-## GET List Personas
-
-GET /api/personas
 
 Se listan todos las perosnas en la base de datos
 
 Se acepta filtrar por pagina, nombre, email
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|page|query|string| no |none|
-|nombre|query|string| no |none|
-|email|query|string| no |none|
+***Endpoint:***
 
-> Response Examples
-
-> 200 Response
-
-```json
-{}
+```bash
+Method: GET
+Type: 
+URL: localhost:8000/api/personas
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+### 2. Create persona
 
-## POST Create persona
-
-POST /api/personas
 
 Crear una nueva persona
 
 Se válidan los campos nombre, email y telefono
 
-> Body Parameters
 
-```yaml
-nombre: Nicolas Rojas
-email: niko.rojass.p@gmail.com
-telefono: +56 9 67765614
+***Endpoint:***
 
+```bash
+Method: POST
+Type: FORMDATA
+URL: localhost:8000/api/personas
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» nombre|body|string| yes |none|
-|» email|body|string| yes |none|
-|» telefono|body|string| yes |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
+| Key | Value | Description |
+| --- | ------|-------------|
+| nombre | Nicolas Rojas |  |
+| email | niko.rojass.p@gmail.com |  |
+| telefono | +56 9 67765614 |  |
 
-```json
-{}
-```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+### 3. Read persona
 
-### Responses Data Schema
-
-## GET Read persona
-
-GET /api/personas/1
 
 Obtener los datos de una persona en particular
 
-> Body Parameters
 
-```yaml
-{}
+***Endpoint:***
 
+```bash
+Method: GET
+Type: FORMDATA
+URL: localhost:8000/api/personas/1
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|Content-Type|header|string| yes |none|
-|body|body|object| no |none|
+***Headers:***
 
-> Response Examples
+| Key | Value | Description |
+| --- | ------|-------------|
+| Content-Type | application/json |  |
 
-> 200 Response
 
-```json
-{}
-```
 
-### Responses
+### 4. Update persona
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### Responses Data Schema
-
-## PUT Update persona
-
-PUT /api/personas/1
 
 Actualizar los datos de una persona
 
 Se pueden actualizar todos los campos o algunos si así se desea
 
-> Body Parameters
 
-```yaml
-email: niko.rojass.p@gmail.co.nz
-telefono: "+56967765614"
-nombre: Nicolás Rojas
+***Endpoint:***
 
+```bash
+Method: PUT
+Type: URLENCODED
+URL: localhost:8000/api/personas/1
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» email|body|string| yes |none|
-|» telefono|body|string| no |none|
-|» nombre|body|string| no |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
 
-```json
-{}
-```
+| Key | Value | Description |
+| --- | ------|-------------|
+| email | niko.rojass.p@gmail.co.nz |  |
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+### 5. Delete persona
 
-## DELETE Delete persona
-
-DELETE /api/personas/3
 
 Borrar una persona de la base de datos
 
-> Body Parameters
 
-```yaml
-{}
+***Endpoint:***
 
+```bash
+Method: DELETE
+Type: FORMDATA
+URL: localhost:8000/api/personas/3
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|Content-Type|header|string| yes |none|
-|body|body|object| no |none|
+***Headers:***
 
-> Response Examples
+| Key | Value | Description |
+| --- | ------|-------------|
+| Content-Type | application/json |  |
 
-> 200 Response
 
-```json
-{}
-```
 
-### Responses
+## Propiedades
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+CRUD de Propiedades
 
-### Responses Data Schema
 
-# Propiedades
 
-## GET List propiedades
+### 1. List propiedades
 
-GET /api/propiedades
 
 Lista de todos las propiedades disponibles
 
 Se puede filtrar por pagina, ciudad y precio
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|page|query|string| no |none|
-|ciudad|query|string| yes |none|
+***Endpoint:***
 
-> Response Examples
-
-> 200 Response
-
-```json
-{}
+```bash
+Method: GET
+Type: 
+URL: localhost:8000/api/propiedades
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+***Query params:***
 
-## POST Create propiedad
+| Key | Value | Description |
+| --- | ------|-------------|
+| ciudad | Curico |  |
 
-POST /api/propiedades
+
+
+### 2. Create propiedad
+
 
 Agregar una nueva propiedad
 
-> Body Parameters
 
-```yaml
-direccion: Av Bernardo O'Higgins 201
-ciudad: Santiago
-precio: "3500"
-descripcion: test
+***Endpoint:***
 
+```bash
+Method: POST
+Type: FORMDATA
+URL: localhost:8000/api/propiedades
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» direccion|body|string| yes |none|
-|» ciudad|body|string| yes |none|
-|» precio|body|string| yes |none|
-|» descripcion|body|string| yes |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
+| Key | Value | Description |
+| --- | ------|-------------|
+| direccion | Av Bernardo O'Higgins 201 |  |
+| ciudad | Santiago |  |
+| precio | 3500 |  |
+| descripcion | test |  |
 
-```json
-{}
-```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+### 3. Read propiedad
 
-### Responses Data Schema
-
-## GET Read propiedad
-
-GET /api/propiedades/3
 
 Ver los datos de una propiedad
 
-> Response Examples
 
-> 200 Response
+***Endpoint:***
 
-```json
-{}
+```bash
+Method: GET
+Type: 
+URL: localhost:8000/api/propiedades/3
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+### 4. Update propiedad
 
-## PUT Update propiedad
-
-PUT /api/propiedades/1
 
 Actualizar una propiedad
 
 Se puede actualizar uno o todos sus campos
 
-> Body Parameters
 
-```yaml
-precio: "2300"
-descripcion: test update
+***Endpoint:***
 
+```bash
+Method: PUT
+Type: URLENCODED
+URL: localhost:8000/api/propiedades/1
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» precio|body|string| no |none|
-|» descripcion|body|string| yes |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
 
-```json
-{}
-```
+| Key | Value | Description |
+| --- | ------|-------------|
+| descripcion | test update |  |
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+### 5. Delete propiedad
 
-## DELETE Delete propiedad
-
-DELETE /api/propiedades/1
 
 Borrar una propiedad
 
-> Response Examples
 
-> 200 Response
+***Endpoint:***
 
-```json
-{}
+```bash
+Method: DELETE
+Type: 
+URL: localhost:8000/api/propiedades/1
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+## Solicitud Visitas
 
-# Solicitud Visitas
+CRUD de solicitudes de visitas
 
-## GET List  solicitud visitas
 
-GET /api/solicitud_visitas
+
+### 1. List  solicitud visitas
+
 
 Lista de todas las solicitudes de visistas, incluye la persona y la propiedad a la cual corresponde
 
-> Response Examples
 
-> 200 Response
+***Endpoint:***
 
-```json
-{}
+```bash
+Method: GET
+Type: 
+URL: localhost:8000/api/solicitud_visitas
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+### 2. Create solicitud visita
 
-## POST Create solicitud visita
-
-POST /api/solicitud_visitas
 
 Crea una nueva solicitud de visitas
 
-> Body Parameters
 
-```yaml
-persona_id: "1"
-propiedad_id: "1"
-fecha_visita: 2024-09-01
-comentarios: ""
+***Endpoint:***
 
+```bash
+Method: POST
+Type: FORMDATA
+URL: localhost:8000/api/solicitud_visitas
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
-|» persona_id|body|string| yes |none|
-|» propiedad_id|body|string| yes |none|
-|» fecha_visita|body|string| yes |none|
-|» comentarios|body|string| yes |none|
 
-> Response Examples
+***Body:***
 
-> 200 Response
+| Key | Value | Description |
+| --- | ------|-------------|
+| persona_id | 1 |  |
+| propiedad_id | 1 |  |
+| fecha_visita | 2024-09-01 |  |
+| comentarios |  |  |
 
-```json
-{}
-```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
+### 3. Read solicitud visita
 
-### Responses Data Schema
-
-## GET Read solicitud visita
-
-GET /api/solicitud_visitas/3
 
 Obtiene los datos de una solicitud con la propiedad y personas asociada
 
-> Response Examples
 
-> 200 Response
+***Endpoint:***
 
-```json
-{}
+```bash
+Method: GET
+Type: 
+URL: localhost:8000/api/solicitud_visitas/3
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+### 4. Update solicitud visita
 
-## PUT Update solicitud visita
-
-PUT /api/solicitud_visitas/5
 
 Actualiza los datos de una solicitud
 
-> Body Parameters
 
-```yaml
-{}
+***Endpoint:***
 
+```bash
+Method: PUT
+Type: FORMDATA
+URL: localhost:8000/api/solicitud_visitas/5
 ```
 
-### Params
 
-|Name|Location|Type|Required|Description|
-|---|---|---|---|---|
-|body|body|object| no |none|
 
-> Response Examples
+### 5. Delete solicitud visita
 
-> 200 Response
-
-```json
-{}
-```
-
-### Responses
-
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
-
-### Responses Data Schema
-
-## DELETE Delete solicitud visita
-
-DELETE /api/solicitud_visitas/4
 
 Borra una solicitud de visita
 
-> Response Examples
 
-> 200 Response
+***Endpoint:***
 
-```json
-{}
+```bash
+Method: DELETE
+Type: 
+URL: localhost:8000/api/solicitud_visitas/4
 ```
 
-### Responses
 
-|HTTP Status Code |Meaning|Description|Data schema|
-|---|---|---|---|
-|200|[OK](https://tools.ietf.org/html/rfc7231#section-6.3.1)|none|Inline|
 
-### Responses Data Schema
+---
+[Back to top](#api-real-state)
 
-# Data Schema
-
-<h2 id="tocS_Tag">Tag</h2>
-
-<a id="schematag"></a>
-<a id="schema_Tag"></a>
-<a id="tocStag"></a>
-<a id="tocstag"></a>
-
-```json
-{
-  "id": 1,
-  "name": "string"
-}
-
-```
-
-### Attribute
-
-|Name|Type|Required|Restrictions|Title|Description|
-|---|---|---|---|---|---|
-|id|integer(int64)|false|none||Tag ID|
-|name|string|false|none||Tag Name|
-
-<h2 id="tocS_Category">Category</h2>
-
-<a id="schemacategory"></a>
-<a id="schema_Category"></a>
-<a id="tocScategory"></a>
-<a id="tocscategory"></a>
-
-```json
-{
-  "id": 1,
-  "name": "string"
-}
-
-```
-
-### Attribute
-
-|Name|Type|Required|Restrictions|Title|Description|
-|---|---|---|---|---|---|
-|id|integer(int64)|false|none||Category ID|
-|name|string|false|none||Category Name|
-
-<h2 id="tocS_Pet">Pet</h2>
-
-<a id="schemapet"></a>
-<a id="schema_Pet"></a>
-<a id="tocSpet"></a>
-<a id="tocspet"></a>
-
-```json
-{
-  "id": 1,
-  "category": {
-    "id": 1,
-    "name": "string"
-  },
-  "name": "doggie",
-  "photoUrls": [
-    "string"
-  ],
-  "tags": [
-    {
-      "id": 1,
-      "name": "string"
-    }
-  ],
-  "status": "available"
-}
-
-```
-
-### Attribute
-
-|Name|Type|Required|Restrictions|Title|Description|
-|---|---|---|---|---|---|
-|id|integer(int64)|true|none||Pet ID|
-|category|[Category](#schemacategory)|true|none||group|
-|name|string|true|none||name|
-|photoUrls|[string]|true|none||image URL|
-|tags|[[Tag](#schematag)]|true|none||tag|
-|status|string|true|none||Pet Sales Status|
-
-#### Enum
-
-|Name|Value|
-|---|---|
-|status|available|
-|status|pending|
-|status|sold|
-
+>Generated at 2024-09-04 13:26:55 by [docgen](https://github.com/thedevsaddam/docgen)
