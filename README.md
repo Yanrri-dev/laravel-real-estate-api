@@ -65,9 +65,11 @@ php artisan test
 ```
 
 
+Por último se corre el servidor de la API para poder usar sus endpoints
 
-
-
+```bash
+php artisan serve
+```
 
 
 <!--- If we have only one group/collection, then no need for the "ungrouped" heading -->
