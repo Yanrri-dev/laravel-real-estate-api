@@ -77,6 +77,11 @@ php artisan serve
 
 ## API Endpoints
 
+URL documentación Postman
+```bash
+https://documenter.getpostman.com/view/13667571/2sAXjPzpgw
+```
+
 * [Auth](#auth)
     1. [login](#1-login)
     1. [register](#2-register)
